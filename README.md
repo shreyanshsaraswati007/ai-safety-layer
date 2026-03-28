@@ -1,109 +1,143 @@
-🔒 OpenAI Safety Layer: Real-Time LLM Defense & Evaluation Platform
-A comprehensive AI safety framework that combines rule-based detection with machine learning to identify, classify, and defend against jailbreak attempts and harmful prompts in Large Language Model interactions.
-🌟 Features
-•  Hybrid Detection Engine: Combines rule-based keyword detection with ML-based semantic analysis
-•  Multi-Attack Classification: Detects 4 types of jailbreak attempts:
-•  instruction_override — Attempts to override system instructions
-•  role_play — Character/persona-based manipulation
-•  multi_step — Multi-turn conversational traps
-•  illegal_activity — Direct requests for harmful/illegal content
-•  Adaptive Defense Mechanisms: Context-aware responses (block, rephrase, or flag)
-•  Real-time Web Interface: Interactive Gradio UI for testing and demonstration
-•  Comprehensive Evaluation: Built-in metrics, confusion matrices, and performance visualizations
-🏗️ Architecture
-┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│   User Prompt   │────▶│  SafetyDetector │────▶│  Defense Engine │
-│                 │     │   (Hybrid ML)     │     │                 │
-└─────────────────┘     └─────────────────┘     └─────────────────┘
-│
-┌─────────┴─────────┐
-▼                   ▼
-┌─────────────┐       ┌─────────────┐
-│ Rule-Based  │       │  ML-Based   │
-│  Detection  │       │  (BERT+LR)  │
-│  (Keywords) │       │  (Embeddings)│
-└─────────────┘       └─────────────┘
-🚀 Quick Start
-Prerequisites
-pip install pandas numpy scikit-learn sentence-transformers matplotlib seaborn gradio
-Running the Platform
-python ai_safety_layer.py
-This will:
-1.  Generate the synthetic safety dataset (62 examples)
-2.  Train the hybrid detection model
-3.  Display evaluation metrics and visualizations
-4.  Launch the Gradio web interface at http://127.0.0.1:7860
-📊 Detection Methodology
+🛡️ OpenAI Safety Layer: Real-Time LLM Defense & Evaluation Platform
+
+A real-time AI safety system that detects, classifies, and defends against jailbreak attacks in Large Language Models (LLMs) using a hybrid approach combining rule-based detection and machine learning.
+
+⸻
+
+🚀 Features
+	•	Hybrid detection (rule-based + ML)
+	•	Risk scoring (0–100)
+	•	Attack classification:
+	•	instruction_override
+	•	role_play
+	•	multi_step
+	•	illegal_activity
+	•	Defense system (block / rephrase / flag / allow)
+	•	Interactive web interface (Gradio)
+	•	Evaluation metrics (accuracy, precision, recall, F1-score)
+	•	Visualization (confusion matrix, performance plots)
+
+⸻
+
+🧠 How It Works
+
+The system processes a user prompt in three stages:
+	1.	Detection Engine
+	•	Rule-based keyword detection
+	•	ML-based semantic detection using embeddings
+	2.	Hybrid Scoring
+	•	Combines rule-based score and ML probability
+	3.	Defense Engine
+	•	Blocks, rewrites, flags, or allows the prompt
+
+⸻
+
+⚙️ Detection Method
+
 Rule-Based Detection
-•  Keyword matching against curated attack pattern dictionaries
-•  Weighted risk scoring (15-30 points per match based on severity)
-•  Attack type classification with 100-point risk scale cap
+	•	Uses predefined keyword patterns
+	•	Assigns weighted risk scores (15–30 per match)
+
 ML-Based Detection
-•  Sentence embeddings via all-MiniLM-L6-v2 transformer
-•  Logistic Regression classifier for jailbreak probability
-•  Probability threshold tuning for precision/recall balance
-Hybrid Scoring Formula
-hybrid_risk_score = (normalized_rule_risk × rule_weight × 100) +
-(ml_probability × ml_weight × 100)
-Default weights: ml_weight=0.6, rule_weight=0.4
-🛡️ Defense Strategies
-Risk Score	Attack Type	Action
-≥60 + illegal_activity/instruction_override	BLOCK	Hard refusal with safety message
-≥60 + role_play/multi_step	REPHRASE	Neutralized response with context
-≥60 (general)	FLAG	Warning with ethical guidelines
-<60	ALLOW	Pass through unchanged
-📈 Performance Metrics
-The system achieves strong detection performance on the synthetic dataset:
-Metric	Score
-Accuracy	1.00
-Precision	1.00
-Recall	1.00
-F1-Score	1.00
-Note: Performance evaluated on 62-example synthetic dataset with 70/30 train-test split.
-🖥️ Web Interface
-Access the interactive demo at http://127.0.0.1:7860 to:
-•  Input custom prompts for real-time analysis
-•  View hybrid risk scores and detected attack types
-•  See defense outputs and explanations
-•  Test edge cases and adversarial examples
-📁 Project Structure
-ai_safety_layer.py          # Main application file
-├── create_safety_dataset()  # Synthetic data generation (62 examples)
-├── SafetyDetector           # Core detection class
-│   ├── rule_based_detect()  # Keyword-based detection
-│   ├── train_ml_detector()  # ML model training
-│   ├── ml_predict()         # Embedding-based prediction
-│   └── hybrid_detect()      # Combined scoring
-├── defend_prompt()          # Defense mechanism router
-├── evaluate_detector()      # Metrics & validation
-├── plot_*()                 # Visualization functions
-└── create_gradio_interface() # Web UI
+	•	Uses sentence embeddings (all-MiniLM-L6-v2)
+	•	Logistic Regression classifier
+	•	Outputs probability of jailbreak
+
+  Hybrid Formula
+  hybrid_risk_score =
+(rule_score × 0.4 × 100) +
+(ml_probability × 0.6 × 100)
+
+🛡️ Defense Strategy
+	•	High risk + illegal/instruction override → BLOCK
+	•	High risk + role-play/multi-step → REPHRASE
+	•	High risk (general) → FLAG
+	•	Low risk → ALLOW
+
+⸻
+
+📊 Performance
+	•	Accuracy: 1.00
+	•	Precision: 1.00
+	•	Recall: 1.00
+	•	F1-score: 1.00
+
+Note: Results are based on a synthetic dataset (62 samples).
+
+⸻
+
+🌐 Web Interface
+
+After running the project, a Gradio interface launches where you can:
+	•	Enter prompts
+	•	View risk scores
+	•	See detected attack types
+	•	Get defense responses
+
+⸻
+
+🧪 Dataset
+	•	62 examples (safe + jailbreak prompts)
+	•	Includes multiple attack types:
+	•	instruction_override
+	•	role_play
+	•	multi_step
+	•	illegal_activity
+
+How to Run
+Install dependencies:
+
+pip install pandas numpy scikit-learn sentence-transformers matplotlib seaborn gradio
+
+Run the project:
+python ai_safety_layer.py
+
+Then open:
+http://127.0.0.1:7860
+
+ Project Structure
+ ai_safety_layer.py
+
+ Includes:
+	•	Dataset generation
+	•	Detection engine
+	•	Defense engine
+	•	Evaluation
+	•	Visualization
+	•	Web interface
+
 🔧 Customization
-Adding New Attack Patterns
-detector.rule_based_keywords["new_category"] = [
-"pattern1", "pattern2", "pattern3"
-]
-Adjusting Detection Sensitivity
-Increase ML influence for semantic understanding
-results = detector.hybrid_detect(prompt, ml_weight=0.8, rule_weight=0.2)
-Lower threshold for more aggressive blocking
-defense = defend_prompt(prompt, detector, threshold=50)
-Training on Custom Data
-detector = SafetyDetector()
-detector.train_ml_detector(custom_prompts, custom_labels)
-⚠️ Limitations & Considerations
-•  Synthetic Dataset: Current implementation uses 62 synthetic examples; production use requires larger, diverse real-world datasets
-•  English Only: Keyword detection optimized for English prompts
-•  Evasion Potential: Determined adversaries may craft prompts that bypass keyword lists
-•  No Active Learning: Model does not automatically update from new attack patterns
-🔮 Future Enhancements
-•  [ ] Integration with live LLM APIs (OpenAI, Anthropic, etc.)
-•  [ ] Active learning pipeline for continuous improvement
-•  [ ] Multi-language support
-•  [ ] Adversarial training for robustness
-•  [ ] Semantic similarity defense for paraphrased attacks
-•  [ ] A/B testing framework for defense strategy optimization
+Add new attack patterns:
+detector.rule_based_keywords["new_category"] = ["pattern1", "pattern2"]
+Adjust detection weights:
+detector.hybrid_detect(prompt, ml_weight=0.8, rule_weight=0.2)
+Train on custom data:
+detector.train_ml_detector(prompts, labels)
+
+⚠️ Limitations
+	•	Uses synthetic dataset
+	•	English-only detection
+	•	Can be bypassed by advanced prompt engineering
+	•	No continuous learning
+
+⸻
+
+🔮 Future Work
+	•	Integration with real LLM APIs
+	•	Larger real-world datasets
+	•	Multi-language support
+	•	Adversarial training
+	•	Continuous learning pipeline
+
+⸻
+
+👤 Author
+
+Shreyansh Saraswati
+
+⸻
+
 📜 License
-This project is provided as a research and educational implementation of AI safety techniques. Use responsibly in accordance with AI safety best practices and applicable regulations.
-Created for: LLM Safety Research & Educational Demonstrations
-Last Updated: March 2026
+
+This project is for research and educational purposes in AI safety.
+Use responsibly.
